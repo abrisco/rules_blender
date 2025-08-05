@@ -1,0 +1,5 @@
+# Git ignore patterns
+
+/*venv*
+/bazel-*
+*.blend1
