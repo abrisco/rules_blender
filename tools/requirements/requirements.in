@@ -1,0 +1,8 @@
+# Python requirements
+bpy
+
+# Development dependencies
+black
+isort
+pylint
+mypy

@@ -1,0 +1,11 @@
+load("//blender:blender_export.bzl", "blender_export")
+
+blender_export(
+    name = "generic.gltf",
+    blend_file = "generic.blend",
+)
+
+blender_export(
+    name = "generic.glb",
+    blend_file = "generic.blend",
+)
