@@ -1,0 +1,32 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+exports_files([
+    "defs.bzl",
+    "extensions.bzl",
+    "requirements_linux_x86_64.txt",
+    "requirements_macos_aarch64.txt",
+    "requirements_windows_x86_64.txt",
+    "requirements.in",
+])
+
+toolchain_type(
+    name = "toolchain_type",
+    visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "defs_bzl",
+    srcs = ["defs.bzl"] + glob(["blender_*.bzl"]),
+    visibility = ["//visibility:public"],
+    deps = ["//blender/private:bzl_lib"],
+)
+
+bzl_library(
+    name = "extensions_bzl",
+    srcs = ["extensions.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//blender/private:bzl_lib",
+        "@bazel_features//:features",
+    ],
+)
