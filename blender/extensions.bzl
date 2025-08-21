@@ -1,19 +1,13 @@
 """Blender bzlmod extensions"""
 
-load("@apple_support//tools/http_dmg:http_dmg.bzl", "http_dmg")
 load("@bazel_features//:features.bzl", "bazel_features")
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load(
-    "//blender/private:local_toolchain_repo.bzl",
-    "blender_local_toolchain_repository",
-)
 load(
     "//blender/private:toolchain_repo.bzl",
-    "BLENDER_PATHS",
+    "BLENDER_DEFAULT_VERSION",
     "BLENDER_VERSIONS",
-    "BLENDER_VERSION_EXTENSIONS",
     "CONSTRAINTS",
     "blender_toolchain_repository_hub",
+    "blender_tools_repository",
 )
 
 def _find_modules(module_ctx):
@@ -24,50 +18,9 @@ def _find_modules(module_ctx):
 
     return root
 
-def _format_toolchain_url(url, version, platform, extension):
-    major_minor, _, _ = version.rpartition(".")
-
-    return (
-        url.replace("{major_minor}", major_minor)
-            .replace("{semver}", version)
-            .replace("{platform}", platform)
-            .replace("{extension}", extension)
-    )
-
-_TOOLCHAIN_BUILD_FILE_CONTENT = """\
-load("@rules_blender//blender:blender_toolchain.bzl", "blender_toolchain")
-
-filegroup(
-    name = "blender_bin",
-    srcs = ["{blender}"],
-    data = glob(
-        include = ["**"],
-        exclude = ["WORKSPACE", "BUILD", "*.bazel"],
-    ),
-)
-
-blender_toolchain(
-    name = "toolchain",
-    blender = ":blender_bin",
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "{name}",
-    actual = ":toolchain",
-    visibility = ["//visibility:public"],
-)
-"""
-
 def _blender_impl(module_ctx):
     root = _find_modules(module_ctx)
-
     reproducible = True
-    for attrs in root.tags.local_toolchain:
-        reproducible = False
-        blender_local_toolchain_repository(
-            name = attrs.name,
-        )
 
     for attrs in root.tags.toolchain:
         if attrs.version not in BLENDER_VERSIONS:
@@ -81,30 +34,12 @@ def _blender_impl(module_ctx):
         toolchain_labels = {}
         exec_compatible_with = {}
         for platform, integrity in available.items():
-            extension = BLENDER_VERSION_EXTENSIONS[platform]
-
-            urls = [
-                _format_toolchain_url(url, attrs.version, platform, extension)
-                for url in attrs.urls
-            ]
-
-            archive_rule = http_archive
-            strip_prefix = "blender-{}-{}".format(attrs.version, platform)
-            if extension == "dmg":
-                archive_rule = http_dmg
-                strip_prefix = ""
-
-            tool_name = "{}__{}".format(attrs.name, platform)
-
-            archive_rule(
-                name = tool_name,
-                urls = urls,
+            tool_name = blender_tools_repository(
+                name = "{}__{}".format(attrs.name, platform),
+                version = attrs.version,
+                platform = platform,
+                url_templates = attrs.urls,
                 integrity = integrity,
-                strip_prefix = strip_prefix,
-                build_file_content = _TOOLCHAIN_BUILD_FILE_CONTENT.format(
-                    name = tool_name,
-                    blender = BLENDER_PATHS[platform],
-                ),
             )
 
             toolchain_names.append(tool_name)
@@ -125,16 +60,6 @@ def _blender_impl(module_ctx):
         metadata_kwargs["reproducible"] = reproducible
     return module_ctx.extension_metadata(**metadata_kwargs)
 
-_LOCAL_TOOLCHAIN_TAG = tag_class(
-    doc = "An extension for defining a `blender_toolchain` backed by local install on the host. Note that this will only be instantiated for the root module.",
-    attrs = {
-        "name": attr.string(
-            doc = "The name of the toolchain.",
-            mandatory = True,
-        ),
-    },
-)
-
 _TOOLCHAIN_TAG = tag_class(
     doc = "An extension for defining a `blender_toolchain` from a download archive.",
     attrs = {
@@ -150,7 +75,7 @@ _TOOLCHAIN_TAG = tag_class(
         ),
         "version": attr.string(
             doc = "The version of Blender to download.",
-            default = "4.5.1",
+            default = BLENDER_DEFAULT_VERSION,
         ),
     },
 )
@@ -159,7 +84,6 @@ blender = module_extension(
     doc = "Bzlmod extensions for Blender",
     implementation = _blender_impl,
     tag_classes = {
-        "local_toolchain": _LOCAL_TOOLCHAIN_TAG,
         "toolchain": _TOOLCHAIN_TAG,
     },
 )

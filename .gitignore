@@ -2,4 +2,5 @@
 
 /*venv*
 /bazel-*
+user.bazelrc
 *.blend1

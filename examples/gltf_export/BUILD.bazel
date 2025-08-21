@@ -1,0 +1,40 @@
+load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
+load("@rules_venv//python:py_binary.bzl", "py_binary")
+load("//blender:blender_export.bzl", "blender_export")
+
+py_binary(
+    name = "gltf_export",
+    srcs = ["gltf_export.py"],
+    deps = ["//blender:current_bpy"],
+)
+
+blender_export(
+    name = "generic_glb",
+    outs = {
+        "generic.glb": "glb",
+    },
+    blend_file = "generic.blend",
+    script = ":gltf_export",
+)
+
+blender_export(
+    name = "generic_gltf",
+    outs = {
+        "generic.bin": "bin",
+        "generic.gltf": "gltf",
+    },
+    blend_file = "generic.blend",
+    script = ":gltf_export",
+)
+
+filegroup(
+    name = "generic_gltf_output",
+    srcs = [":generic_gltf"],
+    output_group = "blender_export_gltf",
+)
+
+diff_test(
+    name = "gltf_diff_test",
+    file1 = ":generic_gltf_output",
+    file2 = "expected.gltf",
+)

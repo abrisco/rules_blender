@@ -1,10 +1,15 @@
 load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 load("@rules_venv//python:py_binary.bzl", "py_binary")
 
+exports_files([
+    "export_process_wrapper.py",
+])
+
 py_binary(
     name = "export_process_wrapper",
     srcs = ["export_process_wrapper.py"],
     visibility = ["//visibility:public"],
+    deps = ["@rules_venv//python/runfiles"],
 )
 
 bzl_library(
@@ -13,5 +18,6 @@ bzl_library(
     visibility = ["//blender:__pkg__"],
     deps = [
         "@apple_support//tools/http_dmg",
+        "@rules_venv//python:defs_bzl",
     ],
 )

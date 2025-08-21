@@ -1,0 +1,15 @@
+load("@rules_venv//python:py_binary.bzl", "py_binary")
+load("//blender:blender_test.bzl", "blender_test")
+
+py_binary(
+    name = "mesh_tester",
+    testonly = True,
+    srcs = ["mesh_tester.py"],
+    deps = ["//blender:current_bpy"],
+)
+
+blender_test(
+    name = "mesh_test",
+    blend_file = "cube.blend",
+    script = ":mesh_tester",
+)

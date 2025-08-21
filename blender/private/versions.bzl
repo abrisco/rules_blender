@@ -3,6 +3,14 @@
 A mapping of platform to integrity of the archive for said platform for each version of Blender available.
 """
 
+# AUTO-GENERATED: DO NOT MODIFY
+#
+# Update using the following command:
+#
+# ```
+# bazel run //tools/update_versions
+# ```
+
 BLENDER_VERSIONS = {
     "3.0.0": {
         "linux-x64": "sha256-GbCd/PXT86BognRU8KcEqaqcgmNQ9zAWEhr+9fTSh84=",
@@ -400,6 +408,12 @@ BLENDER_VERSIONS = {
         "macos-x64": "sha256-PrJP35+g6T1H5VtCQP0MtJtQNXEq6ava5AXOnlFEdIY=",
         "windows-x64": "sha256-17d786klcivoflteQptYTXuqO8yCV5r6eVL8H4wZ0uE=",
     },
+    "4.2.13": {
+        "linux-x64": "sha256-7QyHJ0LVkLQvvjuRKG9g9vGOD2n2MU/Ufbn/QZx84vY=",
+        "macos-arm64": "sha256-IvD1La20CrffR8YjFKLUePZbyzjkqMJKw6oJbLHoZ44=",
+        "macos-x64": "sha256-6qNIGuWadAMSgOxoOvP0U28przjbUJpM6p9qFQoxPXI=",
+        "windows-x64": "sha256-v5H1m7VELe9R8334vXnV5kuVLH5iM+7ZMWdzIgQ6thY=",
+    },
     "4.2.2": {
         "linux-x64": "sha256-RDxfy7kppUr60znI9EWyYgsAwr4XPWgVjMtPYvgcqdc=",
         "macos-arm64": "sha256-jwaAGvUc4TW2s5bBEFrjQ5LaAawKCWCVxMi+YHz6NyM=",
@@ -510,5 +524,12 @@ BLENDER_VERSIONS = {
         "macos-x64": "sha256-x5IrivwZTYKACokm+EIWIAfjZdculVoxkWTLLEZi4Ek=",
         "windows-arm64": "sha256-ouGA3Zhr54xeyn4sDO6StoHjDlr8UZ6eoHw9eqzQ9xs=",
         "windows-x64": "sha256-ri6tsmVtcQ/9bKdKiZUZ/MuADHoY5sBbbzlifkjReu0=",
+    },
+    "4.5.2": {
+        "linux-x64": "sha256-u6U2GSlJHM1pN0uTxUfwh/CcnqrF2MyW2jIQSFwT1E8=",
+        "macos-arm64": "sha256-5RkdAdoVxmwrPRiiifzApXIbwAi6qnMhqR1trmwHgi0=",
+        "macos-x64": "sha256-eySf8kdNlZX8rRdNyIOh7p1dKRu7KFE2AqX9bwhZKek=",
+        "windows-arm64": "sha256-A7OqY3O03aCUeXvgclGfTPwjbE/ZDt1mACQsQ8deAoU=",
+        "windows-x64": "sha256-ok7I3C7glylGJPkOIQw1KNpWJDIEYPAycKOHyiKjNzQ=",
     },
 }
