@@ -10,20 +10,6 @@ from typing import Sequence
 
 RUNNING_UNDER_PROCESS_WRAPPER = "RULES_BLENDER_RUNNING_UNDER_PROCESS_WRAPPER"
 
-SUPPORTED_EXPORTS = {
-    "gltf": "GLTF_SEPARATE",
-    "glb": "GLB",
-}
-
-ILLEGAL_EXPORT_ARGS = [
-    # Only Bazel should provide these.
-    "filepath",
-    "export_format",
-    # TODO: These are arguments
-    "export_texture_dir",
-]
-
-
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -33,11 +19,6 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         if not isinstance(data, dict):
             raise ValueError("Not a json map.")
 
-        for illegal in ILLEGAL_EXPORT_ARGS:
-            if illegal in data:
-                raise ValueError(
-                    f"Invalid export argument: `{illegal}`. The following are not allowed: {ILLEGAL_EXPORT_ARGS}"
-                )
         return data
 
     parser.add_argument(
@@ -47,17 +28,16 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         help="The path to the Blender binary.",
     )
     parser.add_argument(
+        "--main",
+        type=Path,
+        required=True,
+        help="The path to the script entrypoint.",
+    )
+    parser.add_argument(
         "--output", type=Path, required=True, help="The path to the output file."
     )
     parser.add_argument(
         "--blend_file", type=Path, required=True, help="The path to the `.blend` file."
-    )
-    parser.add_argument(
-        "--format",
-        type=str,
-        required=True,
-        choices=SUPPORTED_EXPORTS.keys(),
-        help="The export format to use.",
     )
     parser.add_argument(
         "--export_args",
@@ -102,15 +82,8 @@ def blender_main() -> None:
     argv = json.loads(os.environ[RUNNING_UNDER_PROCESS_WRAPPER])
     args = parse_args(argv)
 
-    # This import is provided by blender.
-    # pylint: disable-next=import-outside-toplevel,import-error,syntax-error
-    import bpy
+    # TODO: Import main
 
-    bpy.ops.export_scene.gltf(
-        filepath=str(args.output),
-        export_format=SUPPORTED_EXPORTS[args.format],
-        **args.export_args,
-    )
 
 
 if __name__ == "__main__":

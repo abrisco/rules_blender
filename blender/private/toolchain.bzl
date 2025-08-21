@@ -14,7 +14,7 @@ def _blender_toolchain_impl(ctx):
         platform_common.ToolchainInfo(
             blender = ctx.executable.blender,
             all_files = depset(transitive = all_files),
-            _is_local = False,
+            is_local = ctx.attr.is_local,
         ),
     ]
 
