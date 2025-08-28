@@ -5,9 +5,10 @@ module(
     version = "0.0.1",
 )
 
+bazel_dep(name = "apple_support", version = "1.23.0")
+bazel_dep(name = "bazel_features", version = "1.32.0")
 bazel_dep(name = "bazel_skylib", version = "1.8.1")
 bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "bazel_features", version = "1.32.0")
 bazel_dep(name = "rules_venv", version = "0.3.1")
 
 blender = use_extension("//blender:extensions.bzl", "blender", dev_dependency = True)
@@ -30,12 +31,6 @@ bazel_dep(name = "stardoc", version = "0.8.0", dev_dependency = True, repo_name 
 bazel_dep(name = "rules_rust_mdbook", version = "0.62.0", dev_dependency = True)
 bazel_dep(name = "rules_shell", version = "0.4.0", dev_dependency = True)
 
-# TODO: https://github.com/bazelbuild/rules_cc/pull/448
-single_version_override(
-    module_name = "rules_cc",
-    version = "0.1.1",
-)
-
 requirements = use_extension("@rules_req_compile//extensions:python.bzl", "requirements", dev_dependency = True)
 requirements.parse(
     name = "pip_deps",
@@ -46,10 +41,3 @@ requirements.parse(
     },
 )
 use_repo(requirements, "pip_deps")
-
-dmg_arc_test_deps = use_extension("//tools/http_dmg/private/tests:http_dmg_test_extensions.bzl", "http_dmg_test", dev_dependency = True)
-use_repo(
-    dmg_arc_test_deps,
-    "http_dmg_test_firefox",
-    "http_dmg_test_firefox_strip_prefix",
-)

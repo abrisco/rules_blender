@@ -1,5 +1,6 @@
 """Blender bzlmod extensions"""
 
+load("@apple_support//tools/http_dmg:http_dmg.bzl", "http_dmg")
 load("@bazel_features//:features.bzl", "bazel_features")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load(
@@ -14,7 +15,6 @@ load(
     "CONSTRAINTS",
     "blender_toolchain_repository_hub",
 )
-load("//tools/http_dmg:http_dmg.bzl", "http_dmg")
 
 def _find_modules(module_ctx):
     root = None
