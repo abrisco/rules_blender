@@ -12,6 +12,6 @@ bzl_library(
     srcs = glob(["*.bzl"]),
     visibility = ["//blender:__pkg__"],
     deps = [
-        "//tools/http_dmg:http_dmg_bzl",
+        "@apple_support//tools/http_dmg",
     ],
 )
