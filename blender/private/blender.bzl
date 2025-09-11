@@ -192,7 +192,7 @@ _COMMON_ATTRS = {
         cfg = "exec",
         aspects = [_blender_script_main_finder_aspect],
         executable = True,
-        allow_files = True,
+        allow_files = [".py"],
         mandatory = True,
     ),
     "_process_wrapper": attr.label(
