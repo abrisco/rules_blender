@@ -36,6 +36,14 @@ BUILD_TEMPLATE = """\
 A mapping of platform to integrity of the archive for said platform for each version of Blender available.
 \"\"\"
 
+# AUTO-GENERATED: DO NOT MODIFY
+#
+# Update using the following command:
+#
+# ```
+# bazel run //tools/update_versions
+# ```
+
 BLENDER_VERSIONS = {}
 """
 

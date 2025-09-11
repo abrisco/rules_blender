@@ -29,6 +29,9 @@ build --incompatible_default_to_explicit_init_py
 # https://github.com/bazelbuild/bazel/issues/23043.
 build --incompatible_autoload_externally=
 
+# Avoid building runfile links which can be slow for runfiles heavy rules like Python.
+build --nobuild_runfile_links
+
 ###############################################################################
 ## Configuration Flags
 ###############################################################################
