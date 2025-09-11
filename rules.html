@@ -167,17 +167,18 @@
 <pre>
 load("@rules_blender//blender:defs.bzl", "blender_export")
 
-blender_export(<a href="#blender_export-name">name</a>, <a href="#blender_export-data">data</a>, <a href="#blender_export-out">out</a>, <a href="#blender_export-args">args</a>, <a href="#blender_export-blend_file">blend_file</a>, <a href="#blender_export-format">format</a>)
+blender_export(<a href="#blender_export-name">name</a>, <a href="#blender_export-data">data</a>, <a href="#blender_export-outs">outs</a>, <a href="#blender_export-args">args</a>, <a href="#blender_export-blend_file">blend_file</a>, <a href="#blender_export-out_dirs">out_dirs</a>, <a href="#blender_export-script">script</a>)
 </pre>
 <p>A Bazel rule for exporting scenes from a <code>.blend</code> file.</p>
 <p><strong>ATTRIBUTES</strong></p>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Description</th><th style="text-align: left">Type</th><th style="text-align: left">Mandatory</th><th style="text-align: left">Default</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a id="blender_export-name"></a>name</td><td style="text-align: left">A unique name for this target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels#target-names">Name</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="blender_export-data"></a>data</td><td style="text-align: left">Additional files associated with the <code>.blend</code> file.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
-<tr><td style="text-align: left"><a id="blender_export-out"></a>out</td><td style="text-align: left">The name of the output file. If unspecified, the name of the target will be used.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
-<tr><td style="text-align: left"><a id="blender_export-args"></a>args</td><td style="text-align: left">A mapping of parameter names to assignments to pass to <a href="https://docs.blender.org/api/current/bpy.ops.export_scene.html#bpy.ops.export_scene.gltf">bpy.ops.export_scene.gltf</a></td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
+<tr><td style="text-align: left"><a id="blender_export-outs"></a>outs</td><td style="text-align: left">Output files produced by this target.</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
+<tr><td style="text-align: left"><a id="blender_export-args"></a>args</td><td style="text-align: left">Any additional arguments to provide tot he export script</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
 <tr><td style="text-align: left"><a id="blender_export-blend_file"></a>blend_file</td><td style="text-align: left">The <code>.blend</code> file to export from.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
-<tr><td style="text-align: left"><a id="blender_export-format"></a>format</td><td style="text-align: left">The format to export to.</td><td style="text-align: left">String</td><td style="text-align: left">optional</td><td style="text-align: left"><code>""</code></td></tr>
+<tr><td style="text-align: left"><a id="blender_export-out_dirs"></a>out_dirs</td><td style="text-align: left">Output directories produced by this target.</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
+<tr><td style="text-align: left"><a id="blender_export-script"></a>script</td><td style="text-align: left">The exporter script.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p><a id="blender_toolchain"></a></p>
@@ -185,13 +186,14 @@ blender_export(<a href="#blender_export-name">name</a>, <a href="#blender_export
 <pre>
 load("@rules_blender//blender:defs.bzl", "blender_toolchain")
 
-blender_toolchain(<a href="#blender_toolchain-name">name</a>, <a href="#blender_toolchain-blender">blender</a>, <a href="#blender_toolchain-is_local">is_local</a>)
+blender_toolchain(<a href="#blender_toolchain-name">name</a>, <a href="#blender_toolchain-blender">blender</a>, <a href="#blender_toolchain-bpy">bpy</a>, <a href="#blender_toolchain-is_local">is_local</a>)
 </pre>
 <p>Define a toolchain for Blender rules.</p>
 <p><strong>ATTRIBUTES</strong></p>
 <div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Description</th><th style="text-align: left">Type</th><th style="text-align: left">Mandatory</th><th style="text-align: left">Default</th></tr></thead><tbody>
 <tr><td style="text-align: left"><a id="blender_toolchain-name"></a>name</td><td style="text-align: left">A unique name for this target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels#target-names">Name</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="blender_toolchain-blender"></a>blender</td><td style="text-align: left">The path to a Blender binary.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><a id="blender_toolchain-bpy"></a>bpy</td><td style="text-align: left">The label to a <a href="https://docs.blender.org/api/current/index.html">Blender Python API, <code>bpy</code></a> target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="blender_toolchain-is_local"></a>is_local</td><td style="text-align: left">Whether or not the toolchain is backed by a host installed Blender.</td><td style="text-align: left">Boolean</td><td style="text-align: left">optional</td><td style="text-align: left"><code>False</code></td></tr>
 </tbody></table>
 </div>
