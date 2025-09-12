@@ -167,6 +167,7 @@
 <h2 id="rules"><a class="header" href="#rules">Rules</a></h2>
 <ul>
 <li><a href="rules.html#blender_export">blender_export</a></li>
+<li><a href="rules.html#blender_test">blender_test</a></li>
 <li><a href="rules.html#blender_toolchain">blender_toolchain</a></li>
 </ul>
 <p><a id="blender_export"></a></p>
@@ -186,6 +187,22 @@ blender_export(<a href="rules.html#blender_export-name">name</a>, <a href="rules
 <tr><td style="text-align: left"><a id="blender_export-blend_file"></a>blend_file</td><td style="text-align: left">The <code>.blend</code> file to export from.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 <tr><td style="text-align: left"><a id="blender_export-out_dirs"></a>out_dirs</td><td style="text-align: left">Output directories produced by this target.</td><td style="text-align: left"><a href="https://bazel.build/rules/lib/dict">Dictionary: String -&gt; String</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>{}</code></td></tr>
 <tr><td style="text-align: left"><a id="blender_export-script"></a>script</td><td style="text-align: left">The exporter script.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
+</tbody></table>
+</div>
+<p><a id="blender_test"></a></p>
+<h2 id="blender_test"><a class="header" href="#blender_test">blender_test</a></h2>
+<pre>
+load("@rules_blender//blender:defs.bzl", "blender_test")
+
+blender_test(<a href="rules.html#blender_test-name">name</a>, <a href="rules.html#blender_test-data">data</a>, <a href="rules.html#blender_test-blend_file">blend_file</a>, <a href="rules.html#blender_test-script">script</a>)
+</pre>
+<p>A Bazel test rule for performing checks on a <code>.blend</code> file.</p>
+<p><strong>ATTRIBUTES</strong></p>
+<div class="table-wrapper"><table><thead><tr><th style="text-align: left">Name</th><th style="text-align: left">Description</th><th style="text-align: left">Type</th><th style="text-align: left">Mandatory</th><th style="text-align: left">Default</th></tr></thead><tbody>
+<tr><td style="text-align: left"><a id="blender_test-name"></a>name</td><td style="text-align: left">A unique name for this target.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels#target-names">Name</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><a id="blender_test-data"></a>data</td><td style="text-align: left">Additional files associated with the <code>.blend</code> file.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">List of labels</a></td><td style="text-align: left">optional</td><td style="text-align: left"><code>[]</code></td></tr>
+<tr><td style="text-align: left"><a id="blender_test-blend_file"></a>blend_file</td><td style="text-align: left">The <code>.blend</code> file to export from.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
+<tr><td style="text-align: left"><a id="blender_test-script"></a>script</td><td style="text-align: left">The exporter script.</td><td style="text-align: left"><a href="https://bazel.build/concepts/labels">Label</a></td><td style="text-align: left">required</td><td style="text-align: left"></td></tr>
 </tbody></table>
 </div>
 <p><a id="blender_toolchain"></a></p>
