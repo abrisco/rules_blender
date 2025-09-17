@@ -2,7 +2,7 @@
 
 module(
     name = "rules_blender",
-    version = "0.0.1",
+    version = "0.0.2",
 )
 
 bazel_dep(name = "apple_support", version = "1.23.0")
