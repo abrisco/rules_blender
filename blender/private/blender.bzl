@@ -221,7 +221,6 @@ A Bazel rule for exporting scenes from a `.blend` file.
     },
     toolchains = [
         TOOLCHAIN_TYPE,
-        py_venv_common.TOOLCHAIN_TYPE,
     ],
 )
 
