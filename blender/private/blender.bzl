@@ -54,6 +54,8 @@ def _generate_process_wrapper(*, ctx, blender_toolchain, script_info, is_test = 
     venv_toolchain = py_venv_common.get_toolchain(ctx, cfg = "exec")
 
     process_wrapper_main = ctx.attr._process_wrapper[BlenderScriptInfo].main
+
+    # process_wrapper_main = script_info.main
     deps = [ctx.attr._process_wrapper]
     srcs = [process_wrapper_main]
     if script_info.target:

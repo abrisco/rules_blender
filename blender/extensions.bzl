@@ -3,7 +3,6 @@
 load("@bazel_features//:features.bzl", "bazel_features")
 load(
     "//blender/private:toolchain_repo.bzl",
-    "BLENDER_DEFAULT_VERSION",
     "BLENDER_VERSIONS",
     "CONSTRAINTS",
     "blender_toolchain_repository_hub",
@@ -12,39 +11,44 @@ load(
 
 def _find_modules(module_ctx):
     root = None
+    rules_module = None
     for mod in module_ctx.modules:
         if mod.is_root:
-            return mod
+            root = mod
+        if mod.name == "rules_blender":
+            rules_module = mod
+    if root == None:
+        root = rules_module
+    if rules_module == None:
+        fail("Unable to find rules_blender module")
 
-    return root
+    return root, rules_module
 
 def _blender_impl(module_ctx):
-    root = _find_modules(module_ctx)
+    root, rules_module = _find_modules(module_ctx)
+    if not root:
+        root = rules_module
     reproducible = True
 
     for attrs in root.tags.toolchain:
-        if attrs.version not in BLENDER_VERSIONS:
-            fail("Blender toolchain hub `{}` was given unsupported version `{}`. Try: {}".format(
-                attrs.name,
-                attrs.version,
-                BLENDER_VERSIONS.keys(),
-            ))
-        available = BLENDER_VERSIONS[attrs.version]
         toolchain_names = []
         toolchain_labels = {}
         exec_compatible_with = {}
-        for platform, integrity in available.items():
-            tool_name = blender_tools_repository(
-                name = "{}__{}".format(attrs.name, platform),
-                version = attrs.version,
-                platform = platform,
-                url_templates = attrs.urls,
-                integrity = integrity,
-            )
+        target_settings = {}
+        for version, available in BLENDER_VERSIONS.items():
+            for platform, integrity in available.items():
+                tool_name = blender_tools_repository(
+                    name = "{}__{}_{}".format(attrs.name, version, platform),
+                    version = version,
+                    platform = platform,
+                    url_templates = attrs.urls,
+                    integrity = integrity,
+                )
 
-            toolchain_names.append(tool_name)
-            toolchain_labels[tool_name] = "@{}".format(tool_name)
-            exec_compatible_with[tool_name] = CONSTRAINTS[platform]
+                toolchain_names.append(tool_name)
+                toolchain_labels[tool_name] = "@{}".format(tool_name)
+                exec_compatible_with[tool_name] = CONSTRAINTS[platform]
+                target_settings[tool_name] = ["@rules_blender//blender/settings:version_{}".format(version)]
 
         blender_toolchain_repository_hub(
             name = attrs.name,
@@ -52,7 +56,7 @@ def _blender_impl(module_ctx):
             toolchain_names = toolchain_names,
             exec_compatible_with = exec_compatible_with,
             target_compatible_with = {},
-            target_settings = {},
+            target_settings = target_settings,
         )
 
     metadata_kwargs = {}
@@ -72,10 +76,6 @@ _TOOLCHAIN_TAG = tag_class(
             default = [
                 "https://download.blender.org/release/Blender{major_minor}/blender-{semver}-{platform}.{extension}",
             ],
-        ),
-        "version": attr.string(
-            doc = "The version of Blender to download.",
-            default = BLENDER_DEFAULT_VERSION,
         ),
     },
 )

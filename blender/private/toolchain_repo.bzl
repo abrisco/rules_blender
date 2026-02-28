@@ -4,7 +4,7 @@ load("@apple_support//tools/http_dmg:http_dmg.bzl", "http_dmg")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("//blender/private:versions.bzl", _BLENDER_VERSIONS = "BLENDER_VERSIONS")
 
-BLENDER_DEFAULT_VERSION = "4.5.1"
+BLENDER_DEFAULT_VERSION = "5.0.1"
 
 BLENDER_VERSIONS = _BLENDER_VERSIONS
 
