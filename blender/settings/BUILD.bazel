@@ -1,0 +1,21 @@
+load(
+    "@bazel_skylib//rules:common_settings.bzl",
+    "string_flag",
+)
+load("//blender/private:versions.bzl", "BLENDER_VERSIONS")
+
+string_flag(
+    name = "version",
+    build_setting_default = "5.0.1",
+    values = BLENDER_VERSIONS.keys(),
+    visibility = ["//visibility:public"],
+)
+
+[
+    config_setting(
+        name = "version_{}".format(version),
+        flag_values = {":version": version},
+        visibility = ["//visibility:public"],
+    )
+    for version in BLENDER_VERSIONS.keys()
+]

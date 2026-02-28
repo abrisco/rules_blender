@@ -1,0 +1,14 @@
+"""rules_blender examples"""
+
+module(
+    name = "rules_blender_examples",
+)
+
+bazel_dep(name = "rules_blender", version = "0.0.0")
+bazel_dep(name = "rules_venv", version = "0.10.0")
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
+
+local_path_override(
+    module_name = "rules_blender",
+    path = "../",
+)

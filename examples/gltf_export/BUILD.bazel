@@ -1,11 +1,11 @@
 load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
+load("@rules_blender//blender:blender_export.bzl", "blender_export")
 load("@rules_venv//python:py_binary.bzl", "py_binary")
-load("//blender:blender_export.bzl", "blender_export")
 
 py_binary(
     name = "gltf_export",
     srcs = ["gltf_export.py"],
-    deps = ["//blender:current_bpy"],
+    deps = ["@rules_blender//blender:current_bpy"],
 )
 
 blender_export(
