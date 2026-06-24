@@ -6,7 +6,7 @@ load("//blender/private:versions.bzl", "BLENDER_VERSIONS")
 
 string_flag(
     name = "version",
-    build_setting_default = "5.0.1",
+    build_setting_default = "5.1.2",
     values = BLENDER_VERSIONS.keys(),
     visibility = ["//visibility:public"],
 )
